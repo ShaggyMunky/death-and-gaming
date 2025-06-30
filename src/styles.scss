@@ -1,0 +1,82 @@
+@use "@angular/material" as mat;
+@use "./app/styles/themes/_theme-colors" as my-theme;
+// @use "./app/styles/themes/_theme-colors";
+
+html {
+  color-scheme: light dark;
+  @include mat.theme(
+    (
+      color: (
+        primary: my-theme.$primary-palette,
+        tertiary: my-theme.$tertiary-palette,
+      ),
+      typography: (
+        plain-family: Inter,
+        brand-family: Inter,
+        bold-weight: 600,
+        medium-weight: 500,
+        regular-weight: 400,
+      ),
+      density: 0,
+    )
+  );
+
+  @media (prefers-contrast: more) {
+    @include my-theme.high-contrast-overrides(color-scheme);
+  }
+}
+
+:root {
+  @include mat.form-field-overrides(
+    (
+      filled-container-color: var(--mat-sys-surface-dim),
+      outlined-outline-color: var(--mat-sys-surface-container-high),
+      outlined-container-shape: 8px,
+      outlined-input-text-placeholder-color: my-theme.$muted-text,
+    )
+  );
+
+  @include mat.card-overrides(
+    (
+      title-text-size: var(--mat-sys-headline-small-size),
+      title-text-weight: var(--mat-sys-label-large-weight-prominent),
+      subtitle-text-weight: var(--mat-sys-headline-medium-weight),
+      subtitle-text-size: var(--mat-sys-label-large-size),
+      subtitle-text-color: my-theme.$muted-text,
+      outlined-container-color: var(--mat-sys-surface-container-low),
+      outlined-outline-color: var(--mat-sys-surface-container-high),
+    )
+  );
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60rem;
+    height: 60rem;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle,
+      rgba(29, 78, 216, 0.3),
+      rgba(124, 58, 237, 0.15),
+      transparent 65%
+    );
+    filter: blur(128px);
+    z-index: -1;
+  }
+}
+
+.mdc-text-field--outlined {
+  background-color: var(--mat-sys-surface-dim);
+  border-radius: 8px;
+}

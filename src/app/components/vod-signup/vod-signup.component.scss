@@ -1,0 +1,48 @@
+@use "@angular/material" as mat;
+@use "../../styles/themes/_theme-colors" as my-theme;
+
+.signup-card {
+  max-width: 29rem;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
+  margin-bottom: 1rem;
+}
+
+.signup-header {
+  margin-bottom: 0.25rem;
+}
+
+.signup-subheader {
+  margin-bottom: 2.5rem;
+}
+
+.disclaimer-box {
+  border: 1px solid var(--mat-sys-surface-container-high);
+  border-radius: 8px;
+  padding: 1rem;
+  color: my-theme.$muted-text;
+}
+
+.send-btn {
+  margin-top: 2rem;
+}
+
+.hidden {
+  display: none;
+}
+
+// .loading {
+//   @include mat.progress-spinner-overrides(
+//     (
+//       size: 1.25rem,
+//       active-indicator-width: 10px,
+//       active-indicator-color: var(--mat-sys-on-primary),
+//     )
+//   );
+// }

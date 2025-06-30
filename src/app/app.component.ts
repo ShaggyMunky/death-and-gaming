@@ -1,12 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { VodService } from './services/vod.service';
-import { NewVodRequest, StreamPlatform } from './types/vod.types';
+import { NewVodRequest, WatchPlatform } from './types/vod.types';
 import { serverTimestamp } from '@angular/fire/firestore';
+import { VodSignupComponent } from './components/vod-signup/vod-signup.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, VodSignupComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
     //   IsComplete: false,
     //   RequestDate: serverTimestamp(),
     //   ReplayId: 10929809,
-    //   Platform: StreamPlatform.YouTube,
+    //   Platform: WatchPlatform.YouTube,
     //   IsPaid: true,
     //   Description: 'I suck',
     // };

@@ -1,0 +1,116 @@
+<mat-card appearance="outlined" class="signup-card">
+  <mat-card-header>
+    <mat-card-title class="signup-header">
+      Live VOD Review Sign-Up</mat-card-title
+    >
+    <mat-card-subtitle class="signup-subheader"
+      >Fill out the form below to get your VOD reviewed.</mat-card-subtitle
+    >
+  </mat-card-header>
+  <mat-card-content>
+    <form
+      [formGroup]="formData"
+      (ngSubmit)="onSubmit()"
+      #formDirective="ngForm"
+      class="form-container"
+    >
+      <mat-form-field class="full-width">
+        <mat-label>Replay Code</mat-label>
+        <input
+          matInput
+          type="number"
+          formControlName="replayId"
+          color="primary"
+          (input)="onReplayInput($event)"
+          required
+          placeholder="Ex. 01234567890"
+        />
+        <mat-hint>{{ replayLength() }}/11</mat-hint>
+        @if (formData.get('replayId')?.hasError('required')) {
+        <mat-error>Replay Code is required</mat-error>
+        } @if (formData.get('replayId')?.hasError('pattern')) {
+        <mat-error>Replay ID must be exactly 11 digits</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Player Name</mat-label>
+        <input
+          matInput
+          formControlName="playerName"
+          placeholder="The name you have in Rivals (IGN)"
+          required
+        />
+        @if (this.formData.get('playerName')?.hasError('required')) {
+        <mat-error>Player Name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>What platform do you play on?</mat-label>
+        <mat-select formControlName="gamePlatform" required>
+          @for (g of gamePlatforms; track g) {
+          <mat-option [value]="g">{{ g }}</mat-option>
+          }
+        </mat-select>
+        @if (formData.get('gamePlatform')?.hasError('required')) {
+        <mat-error>Game platform is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Where do you watch me?</mat-label>
+        <mat-select formControlName="watchPlatform" required>
+          @for (w of watchPlatforms; track w) {
+          <mat-option [value]="w">{{ w }}</mat-option>
+          }
+        </mat-select>
+        @if (formData.get('watchPlatform')?.hasError('required')) {
+        <mat-error>Watch platform is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>What is your Chat Name?</mat-label>
+        <input
+          matInput
+          formControlName="streamName"
+          placeholder="The name you go by in chat"
+        />
+        @if (formData.get('streamName')?.hasError('required')) {
+        <mat-error>Chat name is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Please provide any areas you would like focused on, or any specific questions you have."
+        ></textarea>
+        @if (formData.get('description')?.hasError('required')) {
+        <mat-error>Description is required</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-checkbox formControlName="isLiveCoach" class="full-width">
+        Live coach me as well!
+      </mat-checkbox>
+
+      <div class="disclaimer-box">
+        <p>Only one VOD request can be made per stream</p>
+      </div>
+
+      <button
+        mat-flat-button
+        type="submit"
+        [disabled]="submitting() || formData.invalid"
+        class="send-btn"
+      >
+        <mat-spinner diameter="20" [class.hidden]="!submitting()"></mat-spinner>
+        <span [class.hidden]="submitting()">Request a Review</span>
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

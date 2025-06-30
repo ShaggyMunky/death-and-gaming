@@ -10,7 +10,7 @@ import {
 } from '@angular/fire/firestore';
 import { Observable, tap } from 'rxjs';
 import { DocumentData, serverTimestamp } from 'firebase/firestore';
-import { NewVodRequest, StreamPlatform, VodRequest } from '../types/vod.types';
+import { NewVodRequest, WatchPlatform, VodRequest } from '../types/vod.types';
 
 @Injectable({ providedIn: 'root' })
 export class VodService {

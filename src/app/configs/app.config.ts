@@ -1,7 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { routes } from './app.routes';
+import { routes } from '../app.routes';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import {
@@ -18,7 +18,13 @@ import {
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getPerformance, providePerformance } from '@angular/fire/performance';
-import { firebaseConfig } from './environments/firebase.config';
+import { provideAnimations } from '@angular/platform-browser/animations';
+
+import { firebaseConfig } from './firebase.config';
+import {
+  materialErrorHandling,
+  materialFoamAppearance,
+} from './angular-material.config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -41,5 +47,8 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
     providePerformance(() => getPerformance()),
+    // provideAnimations(),
+    // materialErrorHandling,
+    materialFoamAppearance,
   ],
 };
