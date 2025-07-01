@@ -136,6 +136,8 @@ $_rest: (
 $primary-palette: map.merge(map.get($_palettes, primary), $_rest);
 $tertiary-palette: map.merge(map.get($_palettes, tertiary), $_rest);
 $muted-text: light-dark(var(--mat-sys-neutral-variant20), #a1a1aa);
+$bg-gradient-1: light-dark(rgba(29, 79, 216, 0), rgba(29, 78, 216, 0.3));
+$bg-gradient-2: light-dark(rgba(124, 58, 237, 0), rgba(124, 58, 237, 0.15));
 
 @function _high-contrast-value($light, $dark, $theme-type) {
   @if ($theme-type == light) {

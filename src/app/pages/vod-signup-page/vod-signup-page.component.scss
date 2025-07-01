@@ -1,0 +1,23 @@
+.vod-container {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  position: relative;
+  gap: 3rem;
+}
+
+.vod-queue {
+  flex-grow: 1;
+  max-width: 960px;
+}
+
+@media screen and (max-width: 1279.98px) {
+  .vod-container {
+    flex-direction: column;
+  }
+
+  .vod-queue {
+    max-width: none;
+  }
+}

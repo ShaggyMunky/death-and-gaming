@@ -1,5 +1,5 @@
 @use "@angular/material" as mat;
-@use "../../styles/themes/_theme-colors" as my-theme;
+@use "../../styles/_theme-colors" as my-theme;
 
 .signup-card {
   max-width: 29rem;
@@ -37,12 +37,14 @@
   display: none;
 }
 
-// .loading {
-//   @include mat.progress-spinner-overrides(
-//     (
-//       size: 1.25rem,
-//       active-indicator-width: 10px,
-//       active-indicator-color: var(--mat-sys-on-primary),
-//     )
-//   );
-// }
+.bold {
+  color: var(--mat-sys-on-background);
+  font-weight: 700;
+}
+
+@media screen and (max-width: 1279.98px) {
+  .signup-card {
+    width: 100%;
+    max-width: none;
+  }
+}

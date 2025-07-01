@@ -18,7 +18,6 @@ import {
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getPerformance, providePerformance } from '@angular/fire/performance';
-import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { firebaseConfig } from './firebase.config';
 import {
@@ -47,7 +46,6 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
     providePerformance(() => getPerformance()),
-    // provideAnimations(),
     // materialErrorHandling,
     materialFoamAppearance,
   ],

@@ -3,16 +3,15 @@ import { RouterOutlet } from '@angular/router';
 import { VodService } from './services/vod.service';
 import { NewVodRequest, WatchPlatform } from './types/vod.types';
 import { serverTimestamp } from '@angular/fire/firestore';
-import { VodSignupComponent } from './components/vod-signup/vod-signup.component';
+import { VodSignupPageComponent } from './pages/vod-signup-page/vod-signup-page.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, VodSignupComponent],
+  imports: [RouterOutlet, VodSignupPageComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
-  title = 'Death and Gaming';
   links = [{ title: 'Live VOD Review Sign-up', link: 'https://angular.dev' }];
 
   vodService = inject(VodService);
