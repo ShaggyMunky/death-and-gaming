@@ -1,0 +1,38 @@
+<mat-card appearance="outlined" class="queue-card">
+  <mat-card-header class="queue-header-container">
+    <mat-card-title class="queue-header"> Queue Status </mat-card-title>
+    <!-- <mat-card-subtitle class="signup-subheader">
+      Fill out the form below to get your VOD reviewed.
+    </mat-card-subtitle> -->
+    <div class="availability">
+      <div class="pill" [ngClass]="setPillStatus()">
+        Remaining spots: @if(remainingCount$ | async; as remainingCount) {
+        {{ remainingCount }}
+        } @else {0}
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <p class="vod-status">
+      @if (activeCount$ | async; as activeCount) {
+      <span class="active">{{ activeCount.count }}</span> VOD(s) active and
+      waiting for review } @else { Getting pending count... }
+    </p>
+    <mat-divider></mat-divider>
+    @if (vods$ | async; as vods) {
+    <mat-list role="list">
+      @for (vod of vods; track vod['id']) {
+      <mat-list-item role="listitem" class="list-queue">
+        {{ `${vod["chatName"]} - ${vod["watchPlatform"]}` }}
+      </mat-list-item>
+      }
+    </mat-list>
+    }
+    <mat-divider></mat-divider>
+    <p class="vod-status">
+      @if (pendingCount$ | async; as pendingCount) {
+      <span class="pending">{{ pendingCount.count }}</span> VOD reqests pending
+      payment } @else { Getting pending count... }
+    </p>
+  </mat-card-content>
+</mat-card>

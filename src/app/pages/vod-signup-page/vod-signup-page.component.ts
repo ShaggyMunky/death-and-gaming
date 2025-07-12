@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { VodSignupComponent } from '../../components/vod-signup/vod-signup.component';
-import { VodQueueComponent } from '../../components/vod-list/vod-queue.component';
+import { VodQueueComponent } from '../../components/vod-queue/vod-queue.component';
 
 @Component({
   selector: 'app-vod-signup-page',

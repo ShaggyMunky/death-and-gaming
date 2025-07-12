@@ -1,7 +1,10 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  OnDestroy,
+  OnInit,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -29,7 +32,13 @@ import {
   WatchPlatform,
   VodRequestForm,
   GamePlatform,
+  ReviewStatus,
+  GameRank,
+  RankRequest,
 } from '../../types/vod.types';
+import { VodService } from '../../services/vod.service';
+import { Observable, Subscription } from 'rxjs';
+import { PublicStatsService } from '../../services/public-stats.service';
 
 @Component({
   standalone: true,
@@ -45,41 +54,77 @@ import {
     MatSelectModule,
     MatProgressSpinnerModule,
     ReactiveFormsModule,
+    AsyncPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class VodSignupComponent {
+export class VodSignupComponent implements OnInit, OnDestroy {
   constructor() {
     this.formData = this.buildFormGroup();
-    console.log(this.formData);
   }
 
   @ViewChild(FormGroupDirective)
   private formDirective!: FormGroupDirective;
+  private remainingSignupSub!: Subscription;
 
-  private fb = inject(FormBuilder);
+  private readonly fb = inject(FormBuilder);
+  private readonly publicStats = inject(PublicStatsService);
+  private readonly vodService = inject(VodService);
   protected readonly watchPlatforms = Object.values(WatchPlatform);
   protected readonly gamePlatforms = Object.values(GamePlatform);
+  protected readonly ranks = Object.values(GameRank);
   formData: FormGroup;
+
+  protected ranks$!: Observable<RankRequest[]>;
+  protected remainingSignup: number = 0;
 
   protected readonly replayLength = signal(0);
   protected readonly submitting = signal(false);
 
+  ngOnInit(): void {
+    this.ranks$ = this.vodService.getGameRanks();
+
+    this.remainingSignupSub = this.publicStats.remainingSignup$.subscribe(
+      (value) => {
+        if (typeof value === 'number') {
+          this.remainingSignup = value;
+        } else {
+          this.remainingSignup = 0;
+        }
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    if (this.remainingSignupSub) {
+      this.remainingSignupSub.unsubscribe();
+    }
+  }
+
+  get remainingSignup$(): Observable<number> {
+    return this.publicStats.remainingSignup$;
+  }
+
   onSubmit() {
-    if (this.formData.valid && this.formData.value.replayId) {
+    if (
+      this.remainingSignup > 0 &&
+      this.formData.valid &&
+      this.formData.value.replayId
+    ) {
       this.submitting.set(true);
       const data = this.formData.value as unknown as VodRequestForm;
       const payload: NewVodRequest = {
-        ReplayId: data.replayId,
-        Ign: data.streamName,
-        GamePlatform: data.gamePlatform,
-        WatchPlatform: data.watchPlatform,
-        StreamName: data.streamName,
-        IsLiveCoach: data.isLiveCoach,
-        Description: data.description,
-        IsComplete: false,
-        IsPaid: false,
-        RequestDate: serverTimestamp(),
+        replayId: data.replayId,
+        ign: data.playerName,
+        rank: data.rank,
+        gamePlatform: data.gamePlatform,
+        watchPlatform: data.watchPlatform,
+        chatName: data.chatName,
+        isLiveCoach: data.isLiveCoach,
+        description: data.description,
+        isPaid: false,
+        requestDate: serverTimestamp(),
+        reviewStatus: ReviewStatus.Pending,
       };
       console.log('Form Submitted', payload);
       setTimeout(() => {
@@ -147,11 +192,15 @@ export class VodSignupComponent {
       default: '',
       validators: [Validators.required],
     },
+    rank: {
+      default: '',
+      validators: [Validators.required],
+    },
     watchPlatform: {
       default: '',
       validators: [Validators.required],
     },
-    streamName: {
+    chatName: {
       default: '',
       validators: [Validators.required],
     },

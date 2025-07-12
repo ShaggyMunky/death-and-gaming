@@ -14,9 +14,6 @@ import { VodSignupPageComponent } from './pages/vod-signup-page/vod-signup-page.
 export class AppComponent implements OnInit {
   links = [{ title: 'Live VOD Review Sign-up', link: 'https://angular.dev' }];
 
-  vodService = inject(VodService);
-  // vods$ = this.vodService.getVods().subscribe();
-
   ngOnInit(): void {
     // const data: NewVodRequest = {
     //   StreamName: 'you tube name',
