@@ -1,23 +1,26 @@
 import {
+  collection,
+  CollectionReference,
   DocumentData,
+  Firestore,
   FirestoreDataConverter,
   QueryDocumentSnapshot,
   SnapshotOptions,
-} from 'firebase/firestore';
-import { RankRequest } from '../types/vod.types';
-import { CountDoc } from '../types/public-stats.types';
+} from '@angular/fire/firestore';
+import { NamedItem } from '../models/vod.types';
+import { CountDoc } from '../models/public-stats.types';
 
-export const rankRequestConverter: FirestoreDataConverter<RankRequest> = {
-  toFirestore: (rank: RankRequest): DocumentData => {
+export const namedItemConverter: FirestoreDataConverter<NamedItem> = {
+  toFirestore: (rank: NamedItem): DocumentData => {
     const { id, ...data } = rank;
     return data;
   },
   fromFirestore: (
     snapshot: QueryDocumentSnapshot,
     options: SnapshotOptions
-  ): RankRequest => {
+  ): NamedItem => {
     const data = snapshot.data(options);
-    return { id: snapshot.id, ...data } as RankRequest;
+    return { id: snapshot.id, ...data } as NamedItem;
   },
 };
 
@@ -33,3 +36,11 @@ export const countConverter: FirestoreDataConverter<CountDoc> = {
     return data as CountDoc;
   },
 };
+
+export function convertCollection<T>(
+  firestore: Firestore,
+  collectionType: string,
+  converter: FirestoreDataConverter<T>
+): CollectionReference<T> {
+  return collection(firestore, collectionType).withConverter(converter);
+}

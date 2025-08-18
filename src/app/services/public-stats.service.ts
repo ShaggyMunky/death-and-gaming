@@ -3,7 +3,7 @@ import { Firestore, doc, docData } from '@angular/fire/firestore';
 import { combineLatest, Observable } from 'rxjs';
 import { map, shareReplay, startWith } from 'rxjs/operators';
 
-import { CountDoc } from '../types/public-stats.types';
+import { CountDoc } from '../models/public-stats.types';
 import { countConverter } from '../helpers/firestore.converters';
 
 @Injectable({ providedIn: 'root' })

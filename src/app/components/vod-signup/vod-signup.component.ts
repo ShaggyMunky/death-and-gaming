@@ -2,9 +2,11 @@ import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   inject,
   OnDestroy,
   OnInit,
+  Output,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -34,8 +36,8 @@ import {
   GamePlatform,
   ReviewStatus,
   GameRank,
-  RankRequest,
-} from '../../types/vod.types';
+  NamedItem,
+} from '../../models/vod.types';
 import { VodService } from '../../services/vod.service';
 import { Observable, Subscription } from 'rxjs';
 import { PublicStatsService } from '../../services/public-stats.service';
@@ -59,6 +61,8 @@ import { PublicStatsService } from '../../services/public-stats.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VodSignupComponent implements OnInit, OnDestroy {
+  @Output() dataFetched = new EventEmitter<any>();
+
   constructor() {
     this.formData = this.buildFormGroup();
   }
@@ -75,14 +79,18 @@ export class VodSignupComponent implements OnInit, OnDestroy {
   protected readonly ranks = Object.values(GameRank);
   formData: FormGroup;
 
-  protected ranks$!: Observable<RankRequest[]>;
+  protected ranks$!: Observable<NamedItem[]> | undefined;
+  protected watchPlatforms$!: Observable<NamedItem[]> | undefined;
+  protected gamePlatforms$!: Observable<NamedItem[]> | undefined;
   protected remainingSignup: number = 0;
 
   protected readonly replayLength = signal(0);
   protected readonly submitting = signal(false);
 
   ngOnInit(): void {
-    this.ranks$ = this.vodService.getGameRanks();
+    this.ranks$ = this.vodService.gameRanks$;
+    this.watchPlatforms$ = this.vodService.watchPlatforms$;
+    this.gamePlatforms$ = this.vodService.gamePlatforms$;
 
     this.remainingSignupSub = this.publicStats.remainingSignup$.subscribe(
       (value) => {
@@ -114,19 +122,24 @@ export class VodSignupComponent implements OnInit, OnDestroy {
       this.submitting.set(true);
       const data = this.formData.value as unknown as VodRequestForm;
       const payload: NewVodRequest = {
-        replayId: data.replayId,
-        ign: data.playerName,
-        rank: data.rank,
-        gamePlatform: data.gamePlatform,
-        watchPlatform: data.watchPlatform,
         chatName: data.chatName,
-        isLiveCoach: data.isLiveCoach,
         description: data.description,
+        gamePlatform: data.gamePlatform,
+        ign: data.playerName,
+        isLiveCoach: data.isLiveCoach,
         isPaid: false,
+        rank: data.rank,
+        replayId: data.replayId,
         requestDate: serverTimestamp(),
         reviewStatus: ReviewStatus.Pending,
+        watchPlatform: data.watchPlatform,
       };
       console.log('Form Submitted', payload);
+
+      // this.vodService
+      //   .addVod(payload)
+      //   .then((docRef) => console.log('VOD added with ID: ', docRef.id))
+      //   .catch((err) => console.error('Error adding VOD: ', err));
       setTimeout(() => {
         this.clearForm();
         this.submitting.set(false);

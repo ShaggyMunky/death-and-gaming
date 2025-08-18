@@ -3,19 +3,21 @@ import { FieldValue, Timestamp } from '@angular/fire/firestore';
 export interface VodRequest {
   id: string; // comes from Firestore doc metadata
   chatName: string;
-  ign: string;
-  gamePlatform: GamePlatform;
-  isLiveCoach: boolean;
-  requestDate: Timestamp;
-  replayId: number;
-  watchPlatform: WatchPlatform;
-  isPaid: boolean;
   description: string;
+  gamePlatform: GamePlatform;
+  ign: string;
+  isLiveCoach: boolean;
+  isPaid: boolean;
   rank: GameRank;
+  replayId: number;
+  requestDate: Timestamp;
   reviewStatus: ReviewStatus;
+  statusTimestamps: StatusTimestamps | null;
+  watchPlatform: WatchPlatform;
 }
 
-export interface NewVodRequest extends Omit<VodRequest, 'id' | 'requestDate'> {
+export interface NewVodRequest
+  extends Omit<VodRequest, 'id' | 'requestDate' | 'statusTimestamps'> {
   requestDate: Timestamp | FieldValue;
 }
 
@@ -30,10 +32,15 @@ export interface VodRequestForm {
   description: string;
 }
 
-export interface RankRequest {
+export interface NamedItem {
   id: string;
   name: string;
   order: number;
+}
+
+export interface StatusTimestamps {
+  completed: Timestamp | null;
+  in_progress: Timestamp | null;
 }
 
 export enum ReviewStatus {

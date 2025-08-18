@@ -5,7 +5,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { Observable, Subscription } from 'rxjs';
 
-import { CountDoc } from '../../types/public-stats.types';
+import { CountDoc } from '../../models/public-stats.types';
 
 import { PublicStatsService } from '../../services/public-stats.service';
 import { VodService } from '../../services/vod.service';
@@ -23,7 +23,7 @@ export class VodQueueComponent implements OnInit, OnDestroy {
   private remainingSignupSub!: Subscription;
   protected remainingSignup: number | null = null;
 
-  readonly vods$ = this.vodService.getVods();
+  readonly vods$ = this.vodService.getAdminVods();
 
   ngOnInit(): void {
     this.remainingSignupSub = this.publicStats.remainingSignup$.subscribe(

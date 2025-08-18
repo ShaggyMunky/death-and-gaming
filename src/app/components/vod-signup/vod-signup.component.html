@@ -52,7 +52,7 @@
           @if (ranks$ | async; as ranks) { @for (r of ranks; track r.id) {
           <mat-option [value]="r.id">{{ r.name }}</mat-option>
           } } @else {
-          <mat-option disabled>Loading Ranks...</mat-option>
+          <mat-option disabled>Loading Options...</mat-option>
           }
         </mat-select>
         @if (formData.get('rank')?.hasError('required')) {
@@ -63,8 +63,11 @@
       <mat-form-field class="full-width">
         <mat-label>What platform do you play on?</mat-label>
         <mat-select formControlName="gamePlatform" required>
-          @for (g of gamePlatforms; track g) {
-          <mat-option [value]="g">{{ g }}</mat-option>
+          @if (gamePlatforms$ | async; as gamePlatforms) { @for (g of
+          gamePlatforms; track g.id) {
+          <mat-option [value]="g.id">{{ g.name }}</mat-option>
+          } } @else {
+          <mat-option disabled>Loading Options...</mat-option>
           }
         </mat-select>
         @if (formData.get('gamePlatform')?.hasError('required')) {
@@ -75,8 +78,11 @@
       <mat-form-field class="full-width">
         <mat-label>Where do you watch me?</mat-label>
         <mat-select formControlName="watchPlatform" required>
-          @for (w of watchPlatforms; track w) {
-          <mat-option [value]="w">{{ w }}</mat-option>
+          @if (watchPlatforms$ | async; as watchPlatforms) { @for (w of
+          watchPlatforms; track w.id) {
+          <mat-option [value]="w.id">{{ w.name }}</mat-option>
+          } } @else {
+          <mat-option disabled>Loading Options...</mat-option>
           }
         </mat-select>
         @if (formData.get('watchPlatform')?.hasError('required')) {

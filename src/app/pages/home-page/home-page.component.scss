@@ -1,0 +1,23 @@
+.home {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cta {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background: var(--purple);
+  color: white;
+  text-decoration: none;
+}
+
+.links {
+  display: flex;
+  gap: 1rem;
+}
+
+.active {
+  text-decoration: underline;
+}
